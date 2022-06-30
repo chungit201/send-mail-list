@@ -35,11 +35,10 @@ function App() {
 
   const sendToEmail = () => {
     setLoading(true)
-    data.map(item => {
       axios.post('http://localhost:1002/api/v1/user/send-mail-list', {
         template: template,
         subject: subject,
-        email: item.email
+        email: data
       })
         .then(function (response) {
           // handle success
@@ -52,7 +51,6 @@ function App() {
           console.log(error);
           notification.error({message:"Send mail fail!"})
         })
-    })
     setLoading(false)
 
   }
