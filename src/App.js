@@ -12,7 +12,8 @@ function App() {
   const [template, setTemplate] = useState("");
   const [subject, setSubject] = useState("");
   const [loadingFile, setLoadingFile] = useState(false);
-  const [loading,setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false)
   const readUploadFile = (e) => {
     setLoadingFile(true)
     console.log(e)
@@ -35,22 +36,24 @@ function App() {
 
   const sendToEmail = () => {
     setLoading(true)
-      axios.post('http://localhost:1002/api/v1/user/send-mail-list', {
-        template: template,
-        subject: subject,
-        email: data
+    axios.post('http://localhost:1002/api/v1/user/send-mail-list', {
+      template: template,
+      subject: subject,
+      email: data
+    })
+      .then(function (response) {
+        // handle success
+        if (response.status === 200) {
+          notification.success({message: "Send mail successfully"});
+          setSuccess(true)
+        }
       })
-        .then(function (response) {
-          // handle success
-          if(response.status === 200){
-            notification.success({message:"Send mail successfully"})
-          }
-        })
-        .catch(function (error) {
-          // handle error
-          console.log(error);
-          notification.error({message:"Send mail fail!"})
-        })
+      .catch(function (error) {
+        // handle error
+        console.log(error);
+        notification.error({message: "Send mail fail!"})
+      })
+
     setLoading(false)
 
   }
@@ -81,7 +84,9 @@ function App() {
                   </div>
                   <div className={"mt-2"}>
                     <div>Number of emails to send:
-                      {loadingFile ? <div><Spin tip="Loading..." className={"mt-2"} spinning={loadingFile} size="large" /></div> :  <h1 style={{color: "#1890ff"}}>{data.length}</h1>}
+                      {loadingFile ?
+                        <div><Spin tip="Loading..." className={"mt-2"} spinning={loadingFile} size="large"/></div> :
+                        <h1 style={{color: "#1890ff"}}>{data.length}</h1>}
 
                     </div>
                   </div>
