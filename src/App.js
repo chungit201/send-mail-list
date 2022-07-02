@@ -36,7 +36,7 @@ function App() {
 
   const sendToEmail = () => {
     setLoading(true)
-    axios.post('http://localhost:1002/api/v1/user/send-mail-list', {
+    axios.post('https://slimeroyale.com/api/v1/user/send-mail-list', {
       template: template,
       subject: subject,
       email: data
