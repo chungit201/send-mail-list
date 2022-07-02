@@ -39,6 +39,7 @@ function App() {
     axios.post('https://slimeroyale.com/api/v1/user/send-mail-list', {
       template: template,
       subject: subject,
+
       email: data
     })
       .then(function (response) {
