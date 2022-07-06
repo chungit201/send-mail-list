@@ -10,7 +10,7 @@ const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [pw, setPw] = useState("");
   const defaultAccount = {
-    email: "0xf0E56985fFFb7C15F95479b845917a1707a2B355",
+    email: "0xF00fAD3592Ccda4C81316bde6bf7537c432B3DEA",
     password: "chungdeptrai"
   }
 
