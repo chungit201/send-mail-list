@@ -104,7 +104,7 @@ const HomePage = () => {
                     <div className={"mt-2 d-flex justify-content-center"}>
                       <div>Number of emails to send:
                         {loadingFile ?
-                          <div><Spin tip="Loading..." className={"mt-2"} spinning={loadingFile} size="large"/></div> :
+                          <div className={"d-flex justify-content-center"}><Spin tip="Loading..." className={"mt-2"} spinning={loadingFile} size="large"/></div> :
                           <h1 className={"text-center"} style={{color: "#1890ff"}}>{data.length}</h1>}
                       </div>
                     </div>
