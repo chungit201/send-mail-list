@@ -2,17 +2,14 @@ import React, {useState} from "react";
 import {Button, Col, Form, Modal, Row} from "react-bootstrap";
 import {useNavigate} from "react-router-dom";
 import {useDispatch} from "react-redux";
-import {encodeJwt} from "../../component/utils";
+import {decodeJwt, encodeJwt} from "../../component/utils";
 import {setAccountData} from "../../stores/userSlice";
+import {login} from "../../service/sendmail";
 
 const background = require("../../assets/images/image-article-en.png");
 const LoginPage = () => {
-  const [email, setEmail] = useState("");
+  const [email, setAddress] = useState("");
   const [pw, setPw] = useState("");
-  const defaultAccount = {
-    email: "0xF00fAD3592Ccda4C81316bde6bf7537c432B3DEA",
-    password: "chungdeptrai"
-  }
 
 
   const dispatch = useDispatch()
@@ -20,16 +17,19 @@ const LoginPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault()
     const user = {
-      email: email,
-      password: pw
+      UserName: email,
+      Password: pw
     }
-    if (defaultAccount.email == email && defaultAccount.password == pw) {
-      const tokenPrivate = await encodeJwt(defaultAccount);
-      console.log(tokenPrivate)
-      dispatch(setAccountData(user))
-      localStorage.setItem('accessToken',JSON.stringify(tokenPrivate));
-      navigate('/',{replace:true})
-    }
+    await login({value:await encodeJwt(user)})
+      .then(async (res)=>{
+        const decode = await decodeJwt(res.data);
+        console.log(decode)
+        if(decode.success === true){
+          dispatch(setAccountData(decode.data))
+          localStorage.setItem('accessToken',decode.data.access_token)
+          navigate('/',{replace:true})
+        }
+      })
   }
 
   return (
@@ -55,9 +55,9 @@ const LoginPage = () => {
                 <Form.Label>Wallet address</Form.Label>
                 <Form.Control
                   onChange={(e) => {
-                    setEmail(e.target.value)
+                    setAddress(e.target.value)
                   }}
-                  type="email"
+                  type="address"
                   placeholder="Enter address"/>
                 <Form.Text className="text-muted">
                   We'll never share your email with anyone else.
