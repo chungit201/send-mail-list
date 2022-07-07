@@ -5,7 +5,7 @@ import * as xlsx from "xlsx";
 import axios from "axios";
 import {useState} from "react";
 import {sendMailAuto} from "../../service/sendmail";
-import {encodeJwt} from "../../component/utils";
+import {decodeJwt, encodeJwt} from "../../component/utils";
 import banner from '../../assets/images/banner-send-mail.png'
 import background from "../../assets/images/image-article-en.png";
 const HomePage = () => {
@@ -48,13 +48,15 @@ const HomePage = () => {
         BodyHtml: template,
         Subject: subject,
         Emails: data
-      })}).then(function (response) {
-      console.log(response)
+      })}).then( async function (response) {
+      console.log(response);
+      const decode= await decodeJwt(response.data);
+      console.log(decode)
       // handle success
-      // if (response.status === 200) {
-      //   notification.success({message: "Send mail successfully"});
-      //   setSuccess(true)
-      // }
+      if (decode?.success === true) {
+        notification.success({message: "Send mail successfully"});
+        setSuccess(true)
+      }
     })
       .catch(function (error) {
         // handle error
