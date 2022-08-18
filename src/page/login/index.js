@@ -10,6 +10,7 @@ const background = require("../../assets/images/image-article-en.png");
 const LoginPage = () => {
   const [email, setAddress] = useState("");
   const [pw, setPw] = useState("");
+  const [err,setErr] = useState("")
 
 
   const dispatch = useDispatch()
@@ -28,7 +29,12 @@ const LoginPage = () => {
           dispatch(setAccountData(decode.data))
           localStorage.setItem('accessToken',decode.data.access_token)
           navigate('/',{replace:true})
+        }else {
+          setErr(decode.message)
         }
+      }).catch(err=>{
+        console.log("eee",err)
+
       })
   }
 
@@ -49,7 +55,7 @@ const LoginPage = () => {
       <Row className={"w-100 d-flex justify-content-center"}>
         <Col xl={4} xs={8} sm={6}>
           <div className={"form-login"}>
-            <Form className={"p-5"}>
+            <Form onSubmit={handleSubmit} className={"p-5"}>
               <h4 className={"text-center"}>SLIME SEND MAIL FAST</h4>
               <Form.Group className="mb-3" controlId="formBasicEmail">
                 <Form.Label>Wallet address</Form.Label>
@@ -59,9 +65,6 @@ const LoginPage = () => {
                   }}
                   type="address"
                   placeholder="Enter address"/>
-                <Form.Text className="text-muted">
-                  We'll never share your email with anyone else.
-                </Form.Text>
               </Form.Group>
 
               <Form.Group className="mb-3" controlId="formBasicPassword">
@@ -74,10 +77,9 @@ const LoginPage = () => {
                   }}
                 />
               </Form.Group>
-              <Form.Group className="mb-3" controlId="formBasicCheckbox">
-              </Form.Group>
+              {err && <div className={"text-center "} style={{color:"red"}}>{err}</div>}
               <div className={"text-center "}>
-                <Button onClick={handleSubmit} className={"btn-signup mt-3"} style={{fontWeight: "600"}}
+                <Button className={"btn-signup mt-3 w-100"} style={{fontWeight: "600"}}
                         variant="primary" type="submit">
                   Sign up
                 </Button>
