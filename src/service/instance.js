@@ -8,7 +8,7 @@ const instance = axios.create({
   }
 })
 
-const TOKEN_PAYLOAD_KEY = 'Authorization'
+const TOKEN_PAYLOAD_KEY = 'Authorization';
 
 instance.interceptors.request.use(async (config) => {
   const tokens = localStorage.getItem('accessToken');
